@@ -9,7 +9,6 @@ namespace ETModel
 	{
 		public override void Awake(UIComponent self)
 		{
-			self.Camera = Entity.Global.transform.Find("UICamera").gameObject;
 		}
 	}
 	
@@ -18,14 +17,10 @@ namespace ETModel
 	/// </summary>
 	public class UIComponent: Entity
 	{
-		public GameObject Camera;
-		
 		public Dictionary<string, UI> uis = new Dictionary<string, UI>();
 
 		public void Add(UI ui)
 		{
-			ui.ViewGO.GetComponent<Canvas>().worldCamera = this.Camera.GetComponent<Camera>();
-			
 			this.uis.Add(ui.Name, ui);
 			ui.Parent = this;
 		}
