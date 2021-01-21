@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-	[ObjectSystem]
+	
 	public class OpcodeTypeComponentAwakeSystem : AwakeSystem<OpcodeTypeComponent>
 	{
 		public override void Awake(OpcodeTypeComponent self)
@@ -13,7 +13,7 @@ namespace ET
 		}
 	}
 	
-	[ObjectSystem]
+	
 	public class OpcodeTypeComponentLoadSystem : LoadSystem<OpcodeTypeComponent>
 	{
 		public override void Load(OpcodeTypeComponent self)
@@ -22,7 +22,7 @@ namespace ET
 		}
 	}
 	
-	[ObjectSystem]
+	
 	public class OpcodeTypeComponentDestroySystem : DestroySystem<OpcodeTypeComponent>
 	{
 		public override void Destroy(OpcodeTypeComponent self)
@@ -72,22 +72,6 @@ namespace ET
 		public Type GetType(ushort opcode)
 		{
 			return this.opcodeTypes.GetValueByKey(opcode);
-		}
-		
-		// 客户端为了0GC需要消息池，服务端消息需要跨协程不需要消息池
-		public object GetInstance(ushort opcode)
-		{
-#if SERVER
-			Type type = this.GetType(opcode);
-			if (type == null)
-			{
-				// 服务端因为有人探测端口，有可能会走到这一步，如果找不到opcode，抛异常
-				throw new Exception($"not found opcode: {opcode}");
-			}
-			return Activator.CreateInstance(type);
-#else
-			return this.typeMessages[opcode];
-#endif
 		}
 	}
 }
